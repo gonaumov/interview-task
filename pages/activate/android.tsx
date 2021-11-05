@@ -2,8 +2,10 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../../styles/Home.module.css'
+import { RegisterPage, serverPropsFactory } from "../../lib/utilities";
+import Form from "../../components/form";
 
-const AndroidPage: NextPage = () => {
+const AndroidPage: NextPage<RegisterPage> = ({activationKey, isKeyValid}) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -19,9 +21,14 @@ const AndroidPage: NextPage = () => {
         <div>
           <Link href="/activate/windows">Windows</Link>  / Android /  <Link href="/activate/ios">iOS</Link>
         </div>
+          <div>
+              <Form platform='android' activationKey={activationKey} isKeyValid={isKeyValid} />
+          </div>
       </main>
     </div>
   )
 }
+
+export const getServerSideProps = serverPropsFactory()
 
 export default AndroidPage;

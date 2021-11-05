@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/success": "pages/success.js",
+  "/activate/ios": "pages/activate/ios.js",
+  "/activate/android": "pages/activate/android.js",
   "/activate/windows": "pages/activate/windows.js"
 }

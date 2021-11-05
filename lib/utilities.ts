@@ -13,3 +13,8 @@ export const serverPropsFactory = () => {
     }
     return getServerSideProps
 }
+
+export type RegisterPage = {
+    activationKey: string,
+    isKeyValid: boolean
+}

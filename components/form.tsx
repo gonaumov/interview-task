@@ -1,5 +1,5 @@
 import validKeysPerPlatform from "../lib/validKeysPerPlatform";
-import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
+import { FormEvent, KeyboardEvent, SyntheticEvent, useEffect, useState, ClipboardEvent } from "react";
 import { useCookie } from 'next-cookie'
 import { useRouter } from 'next/router'
 
@@ -50,10 +50,8 @@ export default function Form({platform, activationKey, isKeyValid}: FormProps) {
 
     return (
         <form onSubmit={registerUser}>
-            [{isError}] - [{activationKey}]
-            {isError && activationKey && <div>{errorMessage}</div>}
+            {isError && <div>{errorMessage}</div>}
             <div>
-                {leftPart} - {rightPart}
                 <p>
                     <label htmlFor="activation-key">Enter your Activation Key:</label>
                 </p>
@@ -63,6 +61,15 @@ export default function Form({platform, activationKey, isKeyValid}: FormProps) {
                     name="left-part"
                     defaultValue={leftPart}
                     required
+                    onPaste={(event: ClipboardEvent<HTMLInputElement>) => {
+                        const pastedText = event.clipboardData.getData('Text');
+                        event.preventDefault();
+                        const parts = /^([a-z]+)-([a-z]+)$/i.exec(pastedText);
+                        if (parts) {
+                            setLeftPart(parts[1]);
+                            setRightPart(parts[2]);
+                        }
+                    }}
                     onKeyUp={(event: KeyboardEvent<HTMLInputElement>) => {
                         if (/^[a-z]+$/i.test(event.currentTarget.value)) {
                             setLeftPart(event.currentTarget.value)
