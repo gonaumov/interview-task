@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import validKeysPerPlatform from '../../lib/validKeysPerPlatform';
+import validKeysPerPlatform, { isValidPlatform } from '../../lib/validKeysPerPlatform';
 
 type ActivationKeyResponse = {
   isValid: boolean;
@@ -23,11 +23,11 @@ export default function handler(
       return res.status(400).json({ isValid: false, error: 'Activation key is missing.'});
     }
 
-    if (!platform || typeof validKeysPerPlatform[platform] === 'undefined') {
+    if (isValidPlatform(platform) === false) {
       return res.status(400).json({ isValid: false, error: 'Invalid platform'});
     }
 
-    if (!validKeysPerPlatform[platform].includes(activationKey)) {
+    if (isValidPlatform(platform) && !validKeysPerPlatform[platform].includes(activationKey)) {
       return res.status(400).json({ isValid: false, error: 'Activation key is invalid.'});
     }
 
